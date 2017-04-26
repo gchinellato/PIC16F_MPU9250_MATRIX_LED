@@ -31,3 +31,9 @@
 # Debug files
 *.dSYM/
 *.su
+/pic16f.X/nbproject/private/
+/pic16f.X/build/default/
+/pic16f.X/dist/default/
+/pic.X/nbproject/private/
+/pic.X/build/default/
+/pic.X/dist/default/
