@@ -12,11 +12,18 @@
 extern "C" {
 #endif
 
-#define SPI_SS_1 PORTDbits.RD0
+//the SPI_SS_X should be disabled in SPI_Init
+#define SPI_SS_0 PORTDbits.RD0
+#define SPI_SS_1 PORTDbits.RD1
+    
+typedef enum {
+    SS_0,
+    SS_1
+}SlaveSelect;
     
 void SPI_Init(void);
-void SPI_Write(unsigned char addr, unsigned char data);
-unsigned char SPI_Read(unsigned char addr);
+void SPI_SS(SlaveSelect ss);
+unsigned char SPI_Read_Write(SlaveSelect ss, unsigned char addr, unsigned char data);
 
 #ifdef	__cplusplus
 }

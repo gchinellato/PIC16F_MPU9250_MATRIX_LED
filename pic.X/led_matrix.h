@@ -33,7 +33,7 @@ enum MAX7219_ADDR {
     DISPLAY_TEST = 0x0F,    
 };    
     
-void initLEDMatrix();
+void initLEDMatrix(void);
 
 #ifdef	__cplusplus
 }

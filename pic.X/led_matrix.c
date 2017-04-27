@@ -8,11 +8,11 @@
 #include "led_matrix.h"
 #include "spi.h"
 
-void initLEDMatrix()
+void initLEDMatrix(void)
 { 
     char i;
     for(i=1; i <= MATRIX_LED_ROW; i++)
     {
-        SPI_Write(i, 0);
+        SPI_Read_Write(SS_0, i, 0);
     }
 }
