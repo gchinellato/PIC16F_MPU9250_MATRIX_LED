@@ -50,22 +50,16 @@ void main(void)
     //Configure IMU
     //reset MPU9250
     SPI_Read_Write(SS_1, PWR_MGMT_1, PWR_RESET);    
-    __delay_ms(1000);    
-    //disable I2C protocol
-    SPI_Read_Write(SS_1, USER_CTRL, DISABLE_I2C); 
-    //SPI_Write(SS_1, SIGNAL_PATH_RESET, RESET_SIGNAL);     
+    __delay_ms(1000); 
     //select clock source to gyro
     SPI_Read_Write(SS_1, PWR_MGMT_1, CLOCK_SEL_PLL); 
-    //check WHO AM I
-    printf("gc >>> IMU WHO AM I:%x\r\n", SPI_Read_Write(SS_1, WHO_AM_I, 0x0));
     //enable accel and gyro
     SPI_Read_Write(SS_1, PWR_MGMT_2, SEN_ENABLE);
-    //setup accel and gyro ranges
-    SPI_Read_Write(SS_1, ACCEL_CONFIG, ACCEL_FS_SEL_2G);   
-    SPI_Read_Write(SS_1, GYRO_CONFIG, GYRO_FS_SEL_250DPS);
+    //disable I2C protocol
+    SPI_Read_Write(SS_1, USER_CTRL, DISABLE_I2C); 
     
-    float accelScale = G * 2.0/32767.5; 
-    float gyroScale = 250.0/32767.5 * DEG_TO_RAD;
+    //check WHO AM I
+    printf("gc >>> IMU WHO AM I:%x\r\n", SPI_Read_Write(SS_1, WHO_AM_I|READ_FLAG, 0x0));
     
     printf("gc >>> IMU initialization done\r\n\n\n");
    
@@ -82,21 +76,12 @@ void main(void)
             {
                 SPI_Read_Write(SS_0, i, (1 << j));
                 //printf("gc >>> i:%d, j:%d\r\n", i, j);
-                __delay_ms(10);  
+                __delay_ms(20);  
             }
         }
         
         __delay_ms(10);
-        printf("gc >>> IMU WHO AM I:%x\r\n", SPI_Read_Write(SS_1, WHO_AM_I, 0x0));
-        
-        //IMU
-        //READ ACCEL  
-        printf("gc >>> ACCEL_XOUT_H:%x\r\n", SPI_Read_Write(SS_1, ACCEL_XOUT_H, 0x0));
-        printf("gc >>> ACCEL_XOUT_L:%x\r\n", SPI_Read_Write(SS_1, ACCEL_XOUT_L, 0x0));
-        printf("gc >>> ACCEL_YOUT_H:%x\r\n", SPI_Read_Write(SS_1, ACCEL_YOUT_H, 0x0));
-        printf("gc >>> ACCEL_YOUT_L:%x\r\n", SPI_Read_Write(SS_1, ACCEL_YOUT_L, 0x0));
-        printf("gc >>> ACCEL_ZOUT_H:%x\r\n", SPI_Read_Write(SS_1, ACCEL_ZOUT_H, 0x0));
-        printf("gc >>> ACCEL_ZOUT_L:%x\r\n", SPI_Read_Write(SS_1, ACCEL_ZOUT_L, 0x0));
+        printf("gc >>> IMU WHO AM I:%x\r\n", SPI_Read_Write(SS_1, WHO_AM_I|READ_FLAG, 0x0));
        
         LED0=0x00;
         __delay_ms(10);  

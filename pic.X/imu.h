@@ -11,6 +11,9 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
+    
+//The first bit of the first byte contains the Read/Write bit and indicates the Read (1) or Write (0) operation
+#define READ_FLAG   0x80
 
 #define G 9.807
 #define DEG_TO_RAD 3.1415926/180.0    

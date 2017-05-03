@@ -16,10 +16,17 @@ void SPI_Init(void) {
     TRISCbits.TRISC4 = 0x01; // SPI SDI input
     
     // Configure SPI port
-    SSPCONbits.SSPM = 0x2; // SPI Master mode, clock = Fosc/64 --> 0.3125MHz
-    SSPCONbits.SSPEN = 0x1; // Enables serial port   
-    SSPCONbits.CKP = 0x0; // Idle state for clock is a low level
-    SSPSTATbits.CKE = 0x1; // Transmit occurs on transition from active to Idle clock state
+    SSPCONbits.SSPM = 0x1; // SPI Master mode, clock = Fosc/16 --> 1.25MHz
+    SSPCONbits.SSPEN = 0x1; // Enables serial port  
+    
+    /*         CKP | CKE
+     * MODE 0:  0  |  0
+     * MODE 1:  0  |  1
+     * MODE 2:  1  |  0
+     * MODE 3:  1  |  1
+     */    
+    SSPCONbits.CKP = 0x1; // Clock Polarity Select (idle state)
+    SSPSTATbits.CKE = 0x0; // SPI Clock Select bit (Transmit occurs on transition from idle to active)
     SSPSTATbits.SMP = 0x0; // Input data sampled at end of data output time  
     
     //slave select disabled
