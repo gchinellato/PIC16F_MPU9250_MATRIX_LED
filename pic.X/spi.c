@@ -25,8 +25,8 @@ void SPI_Init(void) {
      * MODE 2:  1  |  0
      * MODE 3:  1  |  1
      */    
-    SSPCONbits.CKP = 0x1; // Clock Polarity Select (idle state)
-    SSPSTATbits.CKE = 0x0; // SPI Clock Select bit (Transmit occurs on transition from idle to active)
+    SSPCONbits.CKP = 0x0; // Clock Polarity Select (Idle state for clock is a high level)
+    SSPSTATbits.CKE = 0x1; // SPI Clock Select bit (Transmit occurs on transition from active to Idle clock state)
     SSPSTATbits.SMP = 0x0; // Input data sampled at end of data output time  
     
     //slave select disabled
