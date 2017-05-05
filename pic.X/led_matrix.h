@@ -12,9 +12,11 @@
 extern "C" {
 #endif
 
+#include "config.h"
+    
 // MAX7219 SPI LED Driver
-#define MATRIX_LED_ROW 8
-#define MATRIX_LED_COL 8
+#define LED_MATRIX_ROW 8
+#define LED_MATRIX_COL 8
  
 enum MAX7219_ADDR {
     NO_OP,
@@ -33,7 +35,9 @@ enum MAX7219_ADDR {
     DISPLAY_TEST = 0x0F,    
 };    
     
-void initLEDMatrix(void);
+void LED_Matrix_Init(void);
+void LED_Matrix_Clear(void);
+void LED_Matrix_Update(char x, char y);
 
 #ifdef	__cplusplus
 }
