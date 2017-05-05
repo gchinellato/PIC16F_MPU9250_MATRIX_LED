@@ -12,11 +12,16 @@
 extern "C" {
 #endif
     
+#include "config.h"
+#include <math.h>
+    
 //The first bit of the first byte contains the Read/Write bit and indicates the Read (1) or Write (0) operation
 #define READ_FLAG   0x80
 
-#define G 9.807
-#define DEG_TO_RAD 3.1415926/180.0    
+#define DEG_TO_RAD M_PI/180.0  
+#define RAD_TO_DEG 180.0/M_PI
+#define EARTH_GRAVITY_MS2 9.80665
+#define ACC_SCALE_MULTIPLIER      0.004 //scale 255=1g=9.81m/s2 1/255=0.0004
 
 //IMU MPU9250 register for Gyro and Accel
 #define SELF_TEST_X_GYRO    0x00
@@ -99,6 +104,30 @@ extern "C" {
     
 #define WHO_AM_I            0x75
 #define DEVICE_ID           0x71
+
+float gAccelScale;
+float gGyroScale; 
+
+typedef struct
+{
+    float x;
+    float y;
+    float z;
+}accel;
+
+typedef struct
+{
+    float x;
+    float y;
+    float z;
+}gyro;
+    
+void IMU_Init(void);
+void IMU_Accel_SetScale(char scale);
+void IMU_Gyro_SetScale(char scale);
+char IMU_WhoAmI(void);
+void IMU_Accel_Read(accel* accel);
+void IMU_Gyro_Read(gyro* gyro);
 
 #ifdef	__cplusplus
 }
