@@ -36,7 +36,8 @@ enum MAX7219_ADDR {
 };    
     
 void LED_Matrix_Init(void);
-void LED_Matrix_Clear(void);
+void LED_Matrix_Clear_All(void);
+void LED_Matrix_Set_All(void);
 void LED_Matrix_Update(char x, char y);
 
 #ifdef	__cplusplus

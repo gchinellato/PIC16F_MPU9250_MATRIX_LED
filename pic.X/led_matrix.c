@@ -25,17 +25,29 @@ void LED_Matrix_Init(void)
     SPI_Read_Write(SS_0, SHUTDOWN, 0x01); 
 }
 
-void LED_Matrix_Clear(void)
+void LED_Matrix_Clear_All(void)
 { 
     char i;
-    for(i=1; i <= LED_MATRIX_ROW; i++)
+    for(i=1; i <= LED_MATRIX_COL; i++)
     {
-        SPI_Read_Write(SS_0, i, 0);
+        LED_Matrix_Update(i, 0);
+    }
+}
+
+void LED_Matrix_Set_All(void)
+{ 
+    char i;
+    for(i=1; i <= LED_MATRIX_COL; i++)
+    {
+        LED_Matrix_Update(i, 0xff);
     }
 }
 
 void LED_Matrix_Update(char x, char y)
 {
-    SPI_Read_Write(SS_0, x, (1 << y));
+    if(x >= DIGIT_0 && x <= DIGIT_7)
+    {
+        SPI_Read_Write(SS_0, x, y);
+    }
 }
 
