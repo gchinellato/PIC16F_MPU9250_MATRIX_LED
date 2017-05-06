@@ -13,69 +13,88 @@
 #include "led_matrix.h"
 #include "imu.h"
 
+#define LP 10
+
+char ledInit[] = {
+    0b11111111,
+    0b11111111,
+    0b11000011,
+    0b11011011,
+    0b11011011,
+    0b11000011,
+    0b11111111,
+    0b11111111,
+};
+
 void main(void) 
-{  
+{          
+    float pitch, roll;
+    float factor_x, factor_j;
+    char x,y;
+    char i,j;
+    char col, row;
+    char lastRow;  
+    unsigned int timer = 0;
+    
     //Init UART
     USART_Init();
+    printf("USART_Init OK\r\n"); 
     
     //Init SPI
     SPI_Init();
+    printf("SPI_Init OK\r\n"); 
     
     //Init LED Matrix and MAX7219
     LED_Matrix_Init();
+    printf("LED_Matrix_Init OK\r\n"); 
  
     //IMU Init
-    IMU_Init();    
+    IMU_Init();  
+    printf("IMU_Init OK\r\n"); 
     printf("IMU WHO AM I:%x\r\n", IMU_WhoAmI()); 
     
-    LED_Matrix_Clear();
+    LED_Matrix_Clear_All();    
    
-     while(1)
-    {   
-        char i,j;
-        /*for(i=1; i <= LED_MATRIX_COL; i++)
-        {
-            for(j=0; j <= LED_MATRIX_ROW; j++)
-            {
-                LED_Matrix_Update(i,j);
-                __delay_ms(10);  
-            }
-        }*/
-
+    while(1)
+    { 
         accel accel;
         IMU_Accel_Read(&accel);
         gyro gyro;
-        IMU_Gyro_Read(&gyro);        
-                
-        //printf("\naccel: %f %f %f [g]\r\n", accel.x, accel.y, accel.z);        
-        //printf("gyro : %08f %08f %08f [deg/s]\r\n", gyro.x, gyro.y, gyro.z);
-        
-        float roll;
-        float pitch;
-        float yaw;
-        
+        IMU_Gyro_Read(&gyro);   
+
         roll = atan2(accel.y, accel.z);
         pitch = atan2(accel.x, accel.z); 
-        //printf("roll: %f pitch: %f\r\n", roll*RAD_TO_DEG, pitch*RAD_TO_DEG);  
-        
-        float factor_x, factor_j;
+        //printf("roll: %f pitch: %f\r\n", roll*RAD_TO_DEG, pitch*RAD_TO_DEG); 
+
         factor_x = ((roll*RAD_TO_DEG)-(-90.0))/(90.0-(-90.0));
-        factor_j = ((pitch*RAD_TO_DEG)-(-90.0))/(90.0-(-90.0));
+        factor_j = ((pitch*RAD_TO_DEG)-(-90.0))/(90.0-(-90.0));        
         i=factor_x*(8-1)+1; 
         j=factor_j*(7-0)+0; 
-        
-        printf("i:%d j:%d\r\n", i, j);  
-        
-        char x,y;
+
         for(x=1; x <= LED_MATRIX_COL; x++)
         {
-            LED_Matrix_Update(x,8);   
-        }
-        
-        LED_Matrix_Update(i,j);
-         
-        __delay_ms(10);
-
+            col = x;
+            row = ledInit[x-1];
+            if(x == i)
+            {
+                //led to move at x,y position
+                row &= (~(1 << j));                 
+                
+                //blink each 20ms, if it is the same value as before
+                if(timer == (LP*2))
+                {
+                    if(row == lastRow)  
+                    {
+                        row ^= (1 << j);
+                    }
+                    timer=0;
+                }
+                lastRow = row;
+            }
+            LED_Matrix_Update(col,row);
+        }        
+        __delay_ms(LP);
+        timer += 1;
     }
     return;
 }
