@@ -19,11 +19,11 @@ extern "C" {
 typedef enum {
     SS_0,
     SS_1
-}SlaveSelect;
+}eSlaveSelect;
     
 void SPI_Init(void);
-void SPI_SS(SlaveSelect ss);
-unsigned char SPI_Read_Write(SlaveSelect ss, unsigned char addr, unsigned char data);
+void SPI_SS(eSlaveSelect ss);
+unsigned char SPI_Read_Write(eSlaveSelect ss, unsigned char addr, unsigned char data);
 
 #ifdef	__cplusplus
 }

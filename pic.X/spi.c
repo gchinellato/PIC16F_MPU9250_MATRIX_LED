@@ -41,7 +41,7 @@ void SPI_Init(void) {
  * SSPBUF: Serial Receive/Transmit Buffer Register
  * SSPSR: MSSP Shift Register
  */
-void SPI_SS(SlaveSelect ss)
+void SPI_SS(eSlaveSelect ss)
 {
     //toogling bit 0
     switch(ss){
@@ -56,7 +56,7 @@ void SPI_SS(SlaveSelect ss)
     }
 }
 
-unsigned char SPI_Read_Write(SlaveSelect ss, unsigned char addr, unsigned char data)
+unsigned char SPI_Read_Write(eSlaveSelect ss, unsigned char addr, unsigned char data)
 {
     // enable the SS SPI pin
     SPI_SS(ss);

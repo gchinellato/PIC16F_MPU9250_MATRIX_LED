@@ -15,16 +15,13 @@
 
 #define LP 10
 
-char ledInit[] = {
-    0b11111111,
-    0b11111111,
-    0b11000011,
-    0b11011011,
-    0b11011011,
-    0b11000011,
-    0b11111111,
-    0b11111111,
-};
+//state machine modes
+typedef enum {
+    NUMERIC,
+    VISUAL,
+} eState;
+
+eState state = NUMERIC;
 
 void main(void) 
 {          
@@ -34,7 +31,8 @@ void main(void)
     char i,j;
     char col, row;
     char lastRow;  
-    unsigned int timer = 0;
+    unsigned int timerBlink = 0;
+    unsigned int timerState = 0;
     
     //Init UART
     USART_Init();
@@ -62,39 +60,72 @@ void main(void)
         gyro gyro;
         IMU_Gyro_Read(&gyro);   
 
+        //compute angles
         roll = atan2(accel.y, accel.z);
         pitch = atan2(accel.x, accel.z); 
         //printf("roll: %f pitch: %f\r\n", roll*RAD_TO_DEG, pitch*RAD_TO_DEG); 
 
+        //interpolate pitch and roll angles according number of leds
         factor_x = ((roll*RAD_TO_DEG)-(-90.0))/(90.0-(-90.0));
         factor_j = ((pitch*RAD_TO_DEG)-(-90.0))/(90.0-(-90.0));        
         i=factor_x*(8-1)+1; 
         j=factor_j*(7-0)+0; 
-
-        for(x=1; x <= LED_MATRIX_COL; x++)
+        
+        //update display        
+        if(state == VISUAL)
         {
-            col = x;
-            row = ledInit[x-1];
-            if(x == i)
+            //graphic position
+            for(x=1; x <= LED_MATRIX_COL; x++)
             {
-                //led to move at x,y position
-                row &= (~(1 << j));                 
-                
-                //blink each 20ms, if it is the same value as before
-                if(timer == (LP*2))
+                col = x;
+                row = ledInit_Default[x-1];
+                if(x == i)
                 {
-                    if(row == lastRow)  
+                    //led to move at x,y position
+                    row &= (~(1 << j));                 
+
+                    //blink each 50ms, if it is the same value as before
+                    //check LP base time
+                    if(timerBlink >= (LP*5))
                     {
-                        row ^= (1 << j);
+                        if(row == lastRow)  
+                        {
+                            row ^= (1 << j);
+                        }
+                        timerBlink=0;
                     }
-                    timer=0;
+                    lastRow = row;
                 }
-                lastRow = row;
-            }
-            LED_Matrix_Update(col,row);
+                LED_Matrix_Update(col,row);
+            }   
+        }   
+        else if(state == NUMERIC)
+        {
+            //numeric value
+            LED_Matrix_SetDigit(((pitch*RAD_TO_DEG*100)/100));
         }        
+           
+        //state mahcine, change state each 2s
+        if(timerState >= (LP*200))
+        {
+            switch(state)
+            {
+                case NUMERIC:
+                    state = VISUAL;
+                    LED_Matrix_Clear_All(); 
+                    timerState=0;
+                    break;
+                case VISUAL:
+                    state= NUMERIC;
+                    LED_Matrix_Clear_All(); 
+                    timerState=0;
+                    break;
+            }
+        }        
+
         __delay_ms(LP);
-        timer += 1;
+        timerBlink += LP;
+        timerState += LP;
     }
     return;
 }
