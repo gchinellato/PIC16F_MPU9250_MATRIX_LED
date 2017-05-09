@@ -30,6 +30,7 @@ void IMU_Init(void)
 
 void IMU_Accel_SetScale(char scale)
 {
+    //set accel scale
     SPI_Read_Write(SS_1, ACCEL_CONFIG, scale); 
     
     switch(scale)
@@ -51,6 +52,7 @@ void IMU_Accel_SetScale(char scale)
 
 void IMU_Gyro_SetScale(char scale)
 {
+    //set gyro scale
     SPI_Read_Write(SS_1, GYRO_CONFIG, scale); 
     
     switch(scale)
@@ -72,15 +74,18 @@ void IMU_Gyro_SetScale(char scale)
 
 char IMU_WhoAmI(void)
 {
+    //get Device ID == 0x71
     return SPI_Read_Write(SS_1, WHO_AM_I|READ_FLAG, 0x0);  
 }
 
 void IMU_Accel_Read(accel* accel)
 {
+    //convert 8-bit register in 16-bit register
     accel->x = ((int)SPI_Read_Write(SS_1, ACCEL_XOUT_H|READ_FLAG, 0x0) << 8) | SPI_Read_Write(SS_1, ACCEL_XOUT_L|READ_FLAG, 0x0);
     accel->y = ((int)SPI_Read_Write(SS_1, ACCEL_YOUT_H|READ_FLAG, 0x0) << 8) | SPI_Read_Write(SS_1, ACCEL_YOUT_L|READ_FLAG, 0x0);
     accel->z = ((int)SPI_Read_Write(SS_1, ACCEL_ZOUT_H|READ_FLAG, 0x0) << 8) | SPI_Read_Write(SS_1, ACCEL_ZOUT_L|READ_FLAG, 0x0);
     
+    //convert to force-g
     accel->x *= gAccelScale;
     accel->y *= gAccelScale;
     accel->z *= gAccelScale;
@@ -88,10 +93,12 @@ void IMU_Accel_Read(accel* accel)
 
 void IMU_Gyro_Read(gyro* gyro)
 {
+     //convert 8-bit register in 16-bit register
     gyro->x = ((int)SPI_Read_Write(SS_1, GYRO_XOUT_H|READ_FLAG, 0x0) << 8) | SPI_Read_Write(SS_1, GYRO_XOUT_L|READ_FLAG, 0x0);
     gyro->y = ((int)SPI_Read_Write(SS_1, GYRO_YOUT_H|READ_FLAG, 0x0) << 8) | SPI_Read_Write(SS_1, GYRO_YOUT_L|READ_FLAG, 0x0);
     gyro->z = ((int)SPI_Read_Write(SS_1, GYRO_ZOUT_H|READ_FLAG, 0x0) << 8) | SPI_Read_Write(SS_1, GYRO_ZOUT_L|READ_FLAG, 0x0);
     
+    //convert to deg/s
     gyro->x *= gGyroScale;
     gyro->y *= gGyroScale;
     gyro->z *= gGyroScale;

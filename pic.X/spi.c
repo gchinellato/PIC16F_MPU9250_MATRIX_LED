@@ -43,7 +43,7 @@ void SPI_Init(void) {
  */
 void SPI_SS(eSlaveSelect ss)
 {
-    //toogling bit 0
+    //toogle SS (bit 0) /* only 2 slaves, if add more SS, please change this method */
     switch(ss){
         case SS_0:
             SPI_SS_0 ^= (1 << 0);  

@@ -74,9 +74,9 @@ void LED_Matrix_SetDigit(int number)
             row = (decimalTable[secondDig].col[col-1] << 5) | decimalTable[firstDig].col[col-1];
             if(negative)
             {
+                //include minus signal
                 row |= decimalTable[0].col[col-1];  
-            }           
-
+            }
             LED_Matrix_Update(col,row);
         }
     }

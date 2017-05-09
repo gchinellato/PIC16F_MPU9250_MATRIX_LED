@@ -13,6 +13,7 @@
 #include "led_matrix.h"
 #include "imu.h"
 
+//Loop period 10ms
 #define LP 10
 
 //state machine modes
@@ -65,13 +66,13 @@ void main(void)
         pitch = atan2(accel.x, accel.z); 
         //printf("roll: %f pitch: %f\r\n", roll*RAD_TO_DEG, pitch*RAD_TO_DEG); 
 
-        //interpolate pitch and roll angles according number of leds
+        //interpolate pitch and roll angles according number of leds to get x,y position
         factor_x = ((roll*RAD_TO_DEG)-(-90.0))/(90.0-(-90.0));
         factor_j = ((pitch*RAD_TO_DEG)-(-90.0))/(90.0-(-90.0));        
-        i=factor_x*(8-1)+1; 
-        j=factor_j*(7-0)+0; 
+        i=factor_x*(LED_MATRIX_COL-1)+1; 
+        j=factor_j*((LED_MATRIX_ROW-1)-0)+0; 
         
-        //update display        
+        //update display according state machine        
         if(state == VISUAL)
         {
             //graphic position
@@ -81,11 +82,10 @@ void main(void)
                 row = ledInit_Default[x-1];
                 if(x == i)
                 {
-                    //led to move at x,y position
+                    //select led to move at x,y position
                     row &= (~(1 << j));                 
 
                     //blink each 50ms, if it is the same value as before
-                    //check LP base time
                     if(timerBlink >= (LP*5))
                     {
                         if(row == lastRow)  
@@ -94,6 +94,7 @@ void main(void)
                         }
                         timerBlink=0;
                     }
+                    //save lastRow value to check in the next loop
                     lastRow = row;
                 }
                 LED_Matrix_Update(col,row);
@@ -101,23 +102,21 @@ void main(void)
         }   
         else if(state == NUMERIC)
         {
-            //numeric value
+            //numeric value (-99 up to 99)
             LED_Matrix_SetDigit(((pitch*RAD_TO_DEG*100)/100));
         }        
            
-        //state mahcine, change state each 2s
+        //state machine, change state each 2s
         if(timerState >= (LP*200))
         {
             switch(state)
             {
                 case NUMERIC:
                     state = VISUAL;
-                    LED_Matrix_Clear_All(); 
                     timerState=0;
                     break;
                 case VISUAL:
                     state= NUMERIC;
-                    LED_Matrix_Clear_All(); 
                     timerState=0;
                     break;
             }

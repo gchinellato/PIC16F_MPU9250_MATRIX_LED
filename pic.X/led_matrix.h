@@ -36,7 +36,7 @@ enum MAX7219_ADDR {
     DISPLAY_TEST = 0x0F,    
 };  
 
-char ledInit_Default[] = {
+const static char ledInit_Default[] = {
     0b11111111,
     0b11111111,
     0b11000011,
@@ -65,7 +65,7 @@ const static tableNumber decimalTable[] = {
     {0b00000000, 0b00000111, 0b00000101, 0b00000111, 0b00000101, 0b00000111, 0b00000000, 0b00000000}, //8
     {0b00000000, 0b00000111, 0b00000101, 0b00000111, 0b00000001, 0b00000001, 0b00000000, 0b00000000}, //9 
 };
-    
+
 void LED_Matrix_Init(void);
 void LED_Matrix_Clear_All(void);
 void LED_Matrix_Set_All(void);
