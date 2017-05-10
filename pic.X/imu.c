@@ -1,8 +1,8 @@
 /* 
  * File:   imu.c
- * Author: gchinellato
- *
- * Created on April 26, 2017, 1:12 AM
+ * Author: Guilherme Chinellato
+ *         Felipe Leal
+ *         William Bispo 
  */
 
 #include "imu.h"

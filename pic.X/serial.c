@@ -1,8 +1,8 @@
 /* 
  * File:   serial.c
- * Author: gchinellato
- *
- * Created on April 26, 2017, 1:11 AM
+ * Author: Guilherme Chinellato
+ *         Felipe Leal
+ *         William Bispo 
  */
 
 #include <xc.h>
@@ -10,7 +10,7 @@
 
 void USART_Init(void){
     TRISCbits.TRISC7 = 0x01; // RX input
-    TRISCbits.TRISC6 = 0x00; // TX input
+    TRISCbits.TRISC6 = 0x00; // TX output
     
     //Configure USART
     TXSTA = 0b00100100;        // 8-bit, tx-enb, asynch, BRGH=1
