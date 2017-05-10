@@ -1,8 +1,8 @@
 /* 
  * File:   led_matrix.h
- * Author: gchinellato
- *
- * Created on April 26, 2017, 1:12 AM
+ * Author: Guilherme Chinellato
+ *         Felipe Leal
+ *         William Bispo 
  */
 
 #ifndef LED_MATRIX_H

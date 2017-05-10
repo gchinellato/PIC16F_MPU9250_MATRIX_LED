@@ -1,8 +1,8 @@
 /* 
  * File:   config.h
- * Author: gchinellato
- *
- * Created on May 4, 2017, 11:18 PM
+ * Author: Guilherme Chinellato
+ *         Felipe Leal
+ *         William Bispo 
  */
 
 #ifndef CONFIG_H

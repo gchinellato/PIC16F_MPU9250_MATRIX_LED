@@ -1,8 +1,9 @@
 /*
  * File:   main.c
- * Author: gchinellato
+ * Author: Guilherme Chinellato
+ *         Felipe Leal
+ *         William Bispo 
  *
- * Created on April 24, 2017, 10:59 PM
  */
 
 #include <stdio.h>
@@ -75,7 +76,6 @@ void main(void)
         //update display according state machine        
         if(state == VISUAL)
         {
-            //graphic position
             for(x=1; x <= LED_MATRIX_COL; x++)
             {
                 col = x;

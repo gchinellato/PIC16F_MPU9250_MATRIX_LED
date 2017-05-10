@@ -1,8 +1,8 @@
 /* 
  * File:   spi.c
- * Author: gchinellato
- *
- * Created on April 26, 2017, 1:11 AM
+ * Author: Guilherme Chinellato
+ *         Felipe Leal
+ *         William Bispo 
  */
 
 #include <xc.h>
@@ -16,7 +16,7 @@ void SPI_Init(void) {
     TRISCbits.TRISC4 = 0x01; // SPI SDI input
     
     // Configure SPI port
-    SSPCONbits.SSPM = 0x1; // SPI Master mode, clock = Fosc/16 --> 1.25MHz
+    SSPCONbits.SSPM = 0x1; // SPI Master mode, clock = Fosc/16 --> 20MHz/16--> 1.25MHz
     SSPCONbits.SSPEN = 0x1; // Enables serial port  
     
     /*         CKP | CKE

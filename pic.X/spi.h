@@ -1,8 +1,8 @@
 /* 
  * File:   spi.h
- * Author: gchinellato
- *
- * Created on April 26, 2017, 1:11 AM
+ * Author: Guilherme Chinellato
+ *         Felipe Leal
+ *         William Bispo 
  */
 
 #ifndef SPI_H
@@ -13,8 +13,10 @@ extern "C" {
 #endif
 
 //the SPI_SS_X should be disabled in SPI_Init
-#define SPI_SS_0 PORTDbits.RD0
-#define SPI_SS_1 PORTDbits.RD1
+//#define SPI_SS_0 PORTDbits.RD0
+//#define SPI_SS_1 PORTDbits.RD1
+#define SPI_SS_0 PORTDbits.RD1
+#define SPI_SS_1 PORTDbits.RD0
     
 typedef enum {
     SS_0,
