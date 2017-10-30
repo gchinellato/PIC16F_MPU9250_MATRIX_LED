@@ -1,11 +1,11 @@
-# TrabPrimeiroSemestre_2017
+# PIC16F_MPU9250_MATRIX_LED
 
 PIC 8-bits + LED Matrix + IMU sensor
 
 ## Study topics
 
 * MCU 8-bits
-* IMU sensor
+* IMU sensor: MPU9250
 * Bit manipulation
 * SPI communication
 * Serial data monitor (USART)
